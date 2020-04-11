@@ -9,6 +9,7 @@ Python parser for Work4Share
 - run ```python manage.py migrate```
 - run ```python manage.py runserver``` to run the server
 - run ```python manage.py scrape``` to run scraping
+- run ```python manage.py match``` to run matching
 
 ## How it works
 

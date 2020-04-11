@@ -14,6 +14,9 @@ class Employee(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=7)
     description = models.TextField()
 
+    def __str__(self):
+        return self.name + " " + self.position
+
 
 class Job(models.Model):
     url = models.TextField(null=True)
@@ -22,3 +25,6 @@ class Job(models.Model):
     location = models.TextField(null=True)
     industry = models.TextField(null=True)
     date_created = models.DateField(null=True)
+
+    def __str__(self):
+        return self.title + " " + self.company_name + " " + self.location
