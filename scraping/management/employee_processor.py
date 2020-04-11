@@ -2,5 +2,8 @@
 
 class EmployeeProcessor:
 
-    def run(self):
+    def __init__(self, jobs):
+        self.jobs = jobs
+
+    def run(self, employee):
         pass
