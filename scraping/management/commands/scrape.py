@@ -1,17 +1,23 @@
+from datetime import datetime
+
 from django.core.management import BaseCommand
 
-from scraping.management.employee_processor import EmployeeProcessor
 from scraping.management.parse import get_jobs
-from scraping.models import Employee
+from scraping.models import Job
 
 
 class Command(BaseCommand):
 
-    def _process_employee(self, employee):
-        EmployeeProcessor(employee).run()
-
     def handle(self, *args, **options):
-        jobs = get_jobs(10, False)
-        employee_processor = EmployeeProcessor(jobs)
-        for employee in Employee.objects.filter(status='active'):
-            employee_processor.run(employee)
+        jobs = get_jobs(550, False)
+        model_jobs = []
+        for job in jobs:
+            model_jobs.append(Job(
+                url='example.com',
+                title=job['Job Title'],
+                company_name=job['Company Name'],
+                location=job['Location'],
+                industry=job['Industry'],
+                date_created=datetime.today(),
+            ))
+        Job.objects.bulk_create(model_jobs)
