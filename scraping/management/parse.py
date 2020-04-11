@@ -37,7 +37,7 @@ def parsing():
     return parser.parse_args()
 
 
-def get_jobs(num_jobs, verbose):
+def     get_jobs(num_jobs, verbose):
     '''Gathers jobs as a dataframe, scraped from Glassdoor'''
 
     # Initializing the webdriver

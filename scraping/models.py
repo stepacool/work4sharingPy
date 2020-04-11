@@ -9,13 +9,10 @@ STATUS_CHOICES = [
 
 
 class Employee(models.Model):
-    name = models.CharField(max_length=511)
     position = models.CharField(max_length=255)
-    status = models.CharField(choices=STATUS_CHOICES, max_length=7)
-    description = models.TextField()
 
     def __str__(self):
-        return self.name + " " + self.position
+        return self.position
 
 
 class Job(models.Model):

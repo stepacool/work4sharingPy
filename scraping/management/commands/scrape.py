@@ -9,7 +9,7 @@ from scraping.models import Job
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        jobs = get_jobs(550, False)
+        jobs = get_jobs(20, False)
         model_jobs = []
         for job in jobs:
             model_jobs.append(Job(

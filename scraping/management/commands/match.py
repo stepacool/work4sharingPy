@@ -13,9 +13,6 @@ class Command(BaseCommand):
             jobs.append(model_to_dict(job))
         return jobs
 
-    def _process_employee(self, employee):
-        EmployeeProcessor(employee).run()
-
     def handle(self, *args, **options):
         jobs = self._get_jobs()
         employee_processor = EmployeeProcessor(jobs)
