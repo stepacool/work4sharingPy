@@ -17,6 +17,8 @@ The server accepts new Employee data on the ```/api/v1/employees/``` endpoint. P
 
 There's a command that processes every employee in the database with status ```active```. It should be run on a minute basis in production.
 
+ADMIN LOGIN:PASS - admin:admin123
+
 ### Prerequisites
 
 ```
