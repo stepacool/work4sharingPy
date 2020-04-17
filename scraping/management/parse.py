@@ -1,6 +1,5 @@
 import argparse
 import os
-from sys import platform
 
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from selenium import webdriver
@@ -38,7 +37,7 @@ def parsing():
     return parser.parse_args()
 
 
-def     get_jobs(num_jobs, verbose):
+def get_jobs_glassdoor(num_jobs, verbose):
     '''Gathers jobs as a dataframe, scraped from Glassdoor'''
 
     # Initializing the webdriver
@@ -48,15 +47,10 @@ def     get_jobs(num_jobs, verbose):
     # options.add_argument('headless')
 
     # Change the path to where chromedriver is in your home folder.
-    if platform == "linux" or platform == "linux2":
-        # linux chromedriver
-        chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_linux64')
-    elif platform == "darwin":
-        # OS X chromedriver
-        chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_mac64')
-    elif platform == "win32":
-        # Windows chromedriver
-        chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_win32.exe')
+    # Mac chromedriver
+    # chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_2')
+    # Windows chromedriver
+    chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver.exe')
 
     driver = webdriver.Chrome(
         executable_path=chrome_driver_path,
@@ -233,12 +227,63 @@ def     get_jobs(num_jobs, verbose):
 
     return jobs
 
+def get_jobs_stepstone(num_jobs, verbose):
+    options = webdriver.ChromeOptions()
+    # Free proxy from https://free-proxy-list.net/
+    options.add_argument('--proxy-server=154.16.202.22:8080')
 
-if __name__ == "__main__":
-    # args = parsing()
 
-    # print(json.dumps(vars(args), indent=4))
+    # TO_FIX: take out from function
+    # Change the path to where chromedriver is in your home folder.
+    # Mac chromedriver
+    # chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_2')
+    # Windows chromedriver
+    chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver.exe')
 
-    data = get_jobs(35, False)
-    with open('out.json', "w", encoding="utf8") as file_obj:
-        json.dump(data, file_obj, ensure_ascii=False, indent=4)
+    driver = webdriver.Chrome(
+        executable_path=chrome_driver_path,
+        options=options)
+    driver.set_window_size(1120, 1000)
+
+    url = 'https://www.stepstone.de/5/job-search-simple.html'
+    driver.get(url)
+    jobs = []
+    while len(jobs) < num_jobs:
+        time.sleep(1)
+
+        job_list = driver.find_elements_by_class_name(
+            "styled__TitleWrapper-sc-7z1cau-1")
+        
+        for job_link in job_list:
+            print("Progress: {}".format("" + str(len(jobs)) + "/" + str(num_jobs)))
+            if len(jobs) >= num_jobs:
+                break
+
+            job_link.click() 
+            time.sleep(4)
+            collected_successfully = False
+
+            try:
+                driver.find_element_by_xpath("/html/body/div[3]/div[2]/div[2]/div/div[1]/div[4]/div/div/div/div/a/span/svg").click()
+            except NoSuchElementException:
+                pass
+
+            while not collected_successfully:
+                try:
+                    company_name = driver.find_elements_by_class_name("at-listing-nav-company-name-link")
+                    #print('company_name', company_name)
+                    #location = driver.find_element_by_xpath('/html/body/div[3]/div[2]/div[2]/div/div[1]/div[1]/div[1]/div[1]/div/div[3]/ul/li[2]/a/span[2]').text
+                    location = driver.find_elements_by_class_name('listing-list at-listing__list-icons_location')
+                    #print('location', location)
+                    job_title = driver.find_element_by_xpath('.//h1[contains(@class, "listing__job-title")]').text
+                    #print('job title', job_title)
+                    #job_description = driver.find_element_by_xpath('.//div[@class="jjs-app-ld-ContentBlock"]').text
+                    job_description = driver.find_elements_by_class_name('js-app-ld-ContentBlock')
+                    #print('job desc', job_description)
+                    collected_successfully = True
+
+                except:
+                    time.sleep(3)
+            #return []
+
+    return []
