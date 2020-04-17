@@ -22,7 +22,8 @@ class Job(models.Model):
     company_name = models.TextField(null=True)
     location = models.TextField(null=True)
     industry = models.TextField(null=True)
+    description = models.TextField(null=True)
     date_created = models.DateField(null=True)
 
     def __str__(self):
-        return self.title + " " + self.company_name + " " + self.location
+        return self.title + " - " + self.company_name + " (" + self.location + ")"

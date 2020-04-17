@@ -41,6 +41,7 @@ class Command(BaseCommand):
                 company_name=job['Company Name'],
                 location=job['Location'],
                 industry=job['Industry'],
+                description=job['Job Description'],
                 date_created=datetime.today(),
             ))
         Job.objects.bulk_create(model_jobs)
