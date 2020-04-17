@@ -1,5 +1,6 @@
 import argparse
 import os
+from sys import platform
 
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from selenium import webdriver
@@ -42,15 +43,9 @@ def get_jobs_glassdoor(num_jobs, verbose):
 
     # Initializing the webdriver
     options = webdriver.ChromeOptions()
-
     # Uncomment the line below if you'd like to scrape without a new Chrome window every time.
     # options.add_argument('headless')
-
-    # Change the path to where chromedriver is in your home folder.
-    # Mac chromedriver
-    # chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_2')
-    # Windows chromedriver
-    chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver.exe')
+    chrome_driver_path = get_chrome_driver_path()
 
     driver = webdriver.Chrome(
         executable_path=chrome_driver_path,
@@ -231,14 +226,7 @@ def get_jobs_stepstone(num_jobs, verbose):
     options = webdriver.ChromeOptions()
     # Free proxy from https://free-proxy-list.net/
     options.add_argument('--proxy-server=154.16.202.22:8080')
-
-
-    # TO_FIX: take out from function
-    # Change the path to where chromedriver is in your home folder.
-    # Mac chromedriver
-    # chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_2')
-    # Windows chromedriver
-    chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver.exe')
+    chrome_driver_path = get_chrome_driver_path()
 
     driver = webdriver.Chrome(
         executable_path=chrome_driver_path,
@@ -287,3 +275,14 @@ def get_jobs_stepstone(num_jobs, verbose):
             #return []
 
     return []
+
+def get_chrome_driver_path():
+    if platform == "linux" or platform == "linux2":
+        # linux chromedriver
+        return os.path.join(settings.BASE_DIR, 'chromedriver_linux64')
+    elif platform == "darwin":
+        # OS X chromedriver
+        return os.path.join(settings.BASE_DIR, 'chromedriver_mac64')
+    elif platform == "win32":
+        # Windows chromedriver
+        return os.path.join(settings.BASE_DIR, 'chromedriver_win32.exe')
