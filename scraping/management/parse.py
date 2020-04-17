@@ -1,5 +1,6 @@
 import argparse
 import os
+from sys import platform
 
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from selenium import webdriver
@@ -47,7 +48,16 @@ def     get_jobs(num_jobs, verbose):
     # options.add_argument('headless')
 
     # Change the path to where chromedriver is in your home folder.
-    chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_2')
+    if platform == "linux" or platform == "linux2":
+        # linux chromedriver
+        chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_linux64')
+    elif platform == "darwin":
+        # OS X chromedriver
+        chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_mac64')
+    elif platform == "win32":
+        # Windows chromedriver
+        chrome_driver_path = os.path.join(settings.BASE_DIR, 'chromedriver_win32.exe')
+
     driver = webdriver.Chrome(
         executable_path=chrome_driver_path,
         options=options)
