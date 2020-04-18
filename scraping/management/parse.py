@@ -75,6 +75,8 @@ def get_jobs_glassdoor(num_jobs, verbose):
         except NoSuchElementException:
             pass
 
+        new_url = driver.get_url();
+
         # Going through each job in this page
         job_buttons = driver.find_elements_by_class_name(
             "jl")  # jl for Job Listing. These are the buttons we're going to click.
@@ -196,20 +198,30 @@ def get_jobs_glassdoor(num_jobs, verbose):
                 print("Competitors: {}".format(competitors))
                 print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
-            jobs.append({"Job Title": job_title,
-                         "Salary Estimate": salary_estimate,
-                         "Job Description": job_description,
-                         "Rating": rating,
-                         "Company Name": company_name,
-                         "Location": location,
-                         "Headquarters": headquarters,
-                         "Size": size,
-                         "Founded": founded,
-                         "Type of ownership": type_of_ownership,
-                         "Industry": industry,
-                         "Sector": sector,
-                         "Revenue": revenue,
-                         "Competitors": competitors})
+            jobs.append({
+                'url': driver.current_url(),
+                'title': job_title,
+                'work_type': "",
+                'contract': "",
+                'description': job_description,
+                'skills': "",
+                'company_name': company_name,
+                'location': location,
+                'industry': industry,
+                'email': "",
+                'phone': "",
+                'address': "",
+            })
+
+            #   "Salary Estimate": salary_estimate,
+            #   "Rating": rating,
+            #   "Sector": sector,
+            #   "Revenue": revenue,
+            #   "Competitors": competitors
+            #   "Headquarters": headquarters,
+            #   "Size": size,
+            #   "Founded": founded,
+            #   "Type of ownership": type_of_ownership,
             # add job to jobs
 
         # Clicking on the "next page" button
@@ -262,11 +274,20 @@ def get_jobs_stepstone(num_jobs, verbose):
         job_description = driver.find_element_by_class_name('js-app-ld-ContentBlock').text
 
         # Save information and go back to main page
-        jobs.append({'Company Name': company_name,
-                     'Location': location,
-                     'Job Title': job_title,
-                     'Industry': "",
-                     'Job Description':job_description})
+        jobs.append({
+            'url': new_url,
+            'title': job_title,
+            'work_type': "",
+            'contract': "",
+            'description': job_description,
+            'skills': "",
+            'company_name': company_name,
+            'location': location,
+            'industry': "",
+            'email': "",
+            'phone': "",
+            'address': "",
+        })
         driver.close()
         driver.switch_to.window(driver.window_handles[0])
         driver.get(url)
