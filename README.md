@@ -8,8 +8,16 @@ Python parser for Work4Share
 - make a ```venv```, run ```pip install requirements.txt```
 - run ```python manage.py migrate```
 - run ```python manage.py runserver``` to run the server
-- run ```python manage.py scrape``` to run scraping
+- run ```python manage.py scrape glassdoor -c 2``` to run scraping
 - run ```python manage.py match``` to run matching
+
+## How to run scrape
+run ```python manage.py scrape``` with aditional params:
+* You need to specify a site for scraping. Available variants: **glassdoor, stepstone**. 
+This is a required parameter.
+* ```-c (--count)``` determines the number of vacancies for parsing. The default is 20. This is an optional parameter.
+
+Example: ```python manage.py scrape glassdoor -c 2```
 
 ## How it works
 
@@ -39,7 +47,9 @@ We use [SemVer](http://semver.org/) for versioning.
 
 ## Authors
 
-* **Stepan Filonov** - *Initial work* - [stepacool](https://github.com/stepacool)
+* **Stepan Filonov** - *Initial work, create API, matching and parse Lithuanian job site* - [stepacool](https://github.com/stepacool)
+* **Bohdan Holoborodko** - *Change scrape and begin to parse German job site* - [HoloborodkoBohdan](https://github.com/HoloborodkoBohdan)
+* **Sergey Lavrov** - *Some fixes and parse German job site* - [lavsexpert](https://github.com/lavsexpert)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
